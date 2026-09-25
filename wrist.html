@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Annika Marschner</title>
+  <meta name="description" content="Wrist project overview page.">
+  <link rel="icon" type="image/png" href="images/tools_icon.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <header class="nav">
+    <div class="container">
+      <div class="nav-menus">
+        <a href="index.html" class="nav-name">Annika Marschner</a>
+        <ul class="nav-links">
+          <li><a href="index.html" aria-current="page">Projects</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="project-header">
+      <div class="project-header-row">
+        <div class="project-icon">
+          <img src="images/wrist_icon.png" alt="Wrist Icon">
+        </div>
+        <div class="project-header-content">
+          <h1>Modular Torque-Dense Wrist Assembly</h1>
+          <p class="subtitle">Undergraduate thesis in the MIT Biomimetic Robotics Lab, advised by Prof. Sangbae Kim.</p>
+          </div>
+        </div>
+    </section>
+
+    <!-- Note to grab thumbnail frame with format like ffmpeg -ss 00:00:10 -i gantry_rally.mp4 -vframes 1 thumbnail.jpg -->
+
+     <div class="split-row">
+          <div class="project-video" style ="--split: .31;">
+            <img src="videos/wrist_voguing.gif" alt="Wrist Voguing (this was actually a bug, but a good ROM demo!)">
+          </div>
+          <div class="split-row">
+            <div class="project-image" style ="--split: .29;">
+            <img src="images/wrist_image.png" alt="Wrist overview photo">
+            </div>
+          <div class="project-section">
+              <h2>Overview</h2>
+              <p>
+                In this project, I designed a 3 degree of freedom (DOF) wrist for a bio-inspired robotic arm using
+                a streamlined co-design approach, in which optimization results actively inform hardware design choices. Central hardware elements designed include a custom motor module
+                used for all DOFs in the
+                wrist, and a modular wrist assembly that emphasizes range of motion, reconfigurability, and
+                structural stability under high loads.
+                <br>
+                <br>
+                In conjunction with hardware design, I developed new control strategies to test how the
+                wrist can be used most effectively; both as an active actuator and as a passive element that
+                leverages momentum transfer. System performance was tested and quantified as an addition to the
+                MIT Biomimetic Robotics Lab’s robotic table tennis system, in which the wrist (previously
+                limited to a single degree of freedom) must precisely position and orient a paddle to return
+                balls with a desired spin, velocity, and landing position during gameplay.
+                <br>
+                <br>
+                You can read my full undergraduate thesis on this project
+                <a href="docs/Improving_Speed_and_Dexterity_of_Dynamic_Motions_in_Bio_Inspired_Robotic_Limbs.pdf"
+                class="text-link3" target="_blank">here</a>.
+              </p>
+          </div>
+     </div>
+    </div>
+
+    <div class="project-section">
+        <div class = "split-row">
+            <div style ="--split: 1.25;">
+                      <h2>Motor Module Design</h2>
+              <p>
+              Former work in the lab has yielded a range of custom actuators with
+              strong performance, including one actuator featuring a compound planetary gearbox with a small size and
+              substantial torque amplification designed by <a href="https://www.linkedin.com/in/nicholas-cerone/"
+              class="text-link3" target="_blank">Nick Cerone</a>. While the existing
+              gearbox design is well suited to this application, the spur gear transmission (a feature resulting
+              from the separation and parallel mounting of the motor and gearbox) is not geometrically
+              compatible with a wrist. To maintain the torque density provided by Nick's gearbox, I designed a new
+              module for this project to mount both the gearbox and motor within one
+              compact housing.
+              <br>
+              <br>
+
+              The size of frameless BLDC motor used in this module was a critically important early decision, with a
+              trade-off between sufficient torque output, sufficient speed, and minimal mass governing its
+              selection. To explore this trade-off with greater depth
+              and precision than reasonably possible with analytical calculations by hand, preliminary
+              trajectory optimizations were run with multiple motor candidates.
+              Though details on these simulations can be found in my thesis, in brief they showed the Mosrac U2523 motor to be most suitable.
+            </p>
+          </div>
+          <div>
+            <div class="project-image">
+              <img src="images/wrist_mot_xsect.png" alt="Wrist motor cross section">
+              <figcaption style="text-align: center;">
+              Fig. 1: Cross sections of the new motor module split along each of two perpendicular planes collinear with the central axis of the motor. Note that the right and
+              left cross sections have flipped vertical orientations relative to each other, in order to show a
+              broader view of the module.
+              </figcaption>
+            </div>
+          </div>
+        </div>
+
+      <div class = "split-row">
+        <div style ="margin: 0;">
+          <div class="project-image">
+            <img src="images/wrist_mot_exploded.png" alt="Wrist motor exploded view">
+            <figcaption>
+              Fig. 2: Exploded view of motor module, with components organized into subassemblies
+(A) housing, (B) motor, (C) gearbox, and (D) bearings.
+            </figcaption>
+          </div>
+          </div>
+
+          <div style ="--split: 1.1;">
+          <p>
+            Components within the module are grouped by subassembly and assigned labels in the image to the left. The existing compound
+            planetary gearbox (subassembly C) is contained in the upper half of the housing (subassembly
+            A), and connected through the shaft of a new extended sun gear (B1) to a rotary adapter
+            (B2), which is mounted in turn to the inner surface of the rotor (B4).
+            <br>
+            <br>
+            The stator of the motor (B5) is contained in the lower half of the housing, and the encoder for the motor is mounted
+            to the lower surface of the housing bottom (A3). A magnet for the encoder (B3) is mounted
+            within the rotary shaft, along the axis of the sun gear. Cutouts in the housing bottom (B3) allow for wires internal to the
+            module (both from the motor itself and from its encoder board) to be passed through the
+            housing, routed between the heat dissipation fins, and connected to the driver board at its
+            mounting location.
+            <br>
+            <br>
+
+            An assembled motor module after manufacturing is shown below in Fig. 3, including the driver
+             and encoder boards (not rendered in Fig. 2).
+
+                      </p>
+          </div>
+      </div>
+
+      <div class = "split-row">
+        <div style ="--split: .85;">
+         <div class="project-image">
+            <img src="images/wrist_mot_photo.png" alt="Wrist motor photo">
+            <figcaption style="text-align: center;">
+              Fig. 3: Assembled motor module. The larger PCB mounted externally
+            is the motor driver board, handling power and communication to the motor and
+            from the encoder. The smaller PCB mounted underneath the bearing in the right view is
+            the encoder board, mounted directly above a magnet embedded in the rotary shaft.
+              </figcaption>
+            </div>
+          </div>
+         <div class="project-image">
+            <img src="images/wrist_shrink_fit.png" alt="Wrist shrink fit">
+            <figcaption style="text-align: center;">
+              Fig. 4: Comparison of simulation and analytical shrink fit stress profiles in the motor. The white
+curve superimposed on top of the simulated stress field shows an average of stress values
+at all visible heights at each radius.
+              </figcaption>
+        </div>
+      </div>
+
+      <div>
+        <p> Additionally, a shrink fit version of the sun gear and rotary shaft was manufactured to maximize
+concentricity and rotational stiffness in the module. The behavior of this shrink fit under a range of conditions was analyzed to ensure its
+viability, including (1) the sun gear, rotary shaft, and rotor at room temperature after
+assembly, (2) the sun gear, rotary shaft, and rotor under approximately uniform heating by
+the motor during high power operation, and (3) the sun gear and rotary shaft under the
+maximum reasonable temperature difference ∆T imposed to enable assembly. This analysis is discussed in detail in Section 2.4 of my thesis.
+Analytical solutions were verified against simulation results as shown in Fig. 4.
+
+        </p>
+      </div>
+      </div>
+
+    <div class="project-section">
+      <h2> Wrist Assembly Design</h2>
+      <div class = "split-row">
+          <div style ="--split: 1.25;">
+            <div class="project-image">
+            <img src="images/explode_wrist.png" alt="Wrist assembly exploded view">
+            <figcaption>
+              <br>
+              <br>
+            Above: Fig. 5 - Exploded view of the wrist assembly, with components visually grouped by the
+            degree of freedom that they govern.
+            <br>
+            <br>
+            Right: Fig. 6: Overview of the wrist assembly described in this work. Note that the pitch and
+yaw degrees of freedom for this design are not necessarily determinate, since the position of the
+roll joint dictates which of the subsequent two joints governs each of these conventional
+rotations.
+            </figcaption>
+          </div>
+        </div>
+          <div class="project-image">
+            <img src="images/wrist_overview.png" alt="Wrist assembly overview">
+          </div>
+      </div>
+
+      <div>
+        <p>
+
+          Incorporating the custom motor modules described above, I designed a
+compact, torque-dense 3 DOF wrist assembly. A serial configuration of joints,
+rather than a parallel or spherical one, is used for easier modularity, simpler kinematics, and
+better future compatibility with reinforcement learning as a potential technique for control.
+        </p>
+      </div>
+
+  <div class = "split-row">
+        <div>
+            <p>
+
+          The constraints and design priorities governing components of this assembly are discussed
+          in further detail in Chapter 3 of my thesis. Throughout the assembly, widely compatible mounting and integration components are
+          designed to be patterned multiple times to bring down manufacturing cost and complexity. A total of just 9 unique machined part designs make up
+          all 19 structural parts in the assembly (excluding non-critical auxiliary parts, such as PCB covers).
+                <br>
+                <br>
+          The interchangeable output of the wrist is connected through a torque transfer coupling,
+          allowing for the rapid swapping of different end effectors
+          during wrist use. Each coupling comprises two halves with an
+              internal torque-transfer profile, and a threaded ring to handle axial loads. Each degree of freedom in the assembly is separated by such a coupling,
+          allowing users to easily add, remove, and reconfigure (for example, rotate in 90-degree increments) joints in the wrist, even during active use
+          of the system.
+        </p>
+      </div>
+          <div class="project-image" style ="--split: 0.38;">
+            <img src="images/wrist_assembly_sun.png" alt="Wrist assembly exploded view">
+            <figcaption style="text-align: center;">
+              Fig. 7: View inside a wrist coupling during assembly.
+            </figcaption>
+          </div>
+          <div class="project-image" style ="--split: 0.55;">
+            <img src="images/wide_wrist_image.png" alt="Wrist assembly exploded view">
+            <figcaption style="text-align: center;">
+              Fig. 8: The complete assembled and wired wrist, with no end-effector installed.
+            </figcaption>
+          </div>
+  </div>
+    </div>
+
+    <div class="project-section">
+      <h2> Simulation &amp; Trajectory Optimization</h2>
+      <div class = "split-row">
+          <div style ="--split: 1.35;">
+            <p>
+            One application of this wrist module is the exploration of the roles played by the
+wrist in arm trajectories. Before beginning hardware testing, I conducted a series of simulation
+experiments in MuJoCo analyzing how multiple factors in the use of the wrist affect the performance of the arm.
+Firstly, the degree of passivity of the wrist, modeled by a variable torque limit imposed
+on the wrist motors (with 0 allowable torque output representing an entirely passive wrist,
+and unchanged torque output representing an entirely active wrist).
+<br>
+<br>
+Secondly, the extent of wrist utilization in the trajectory, modeled by a variable weight
+multiplier on position, velocity, and acceleration costs for the wrist joints independent of the
+rest of the arm. An extremely large maximum weight multiplier results in complete kinematic
+exclusion of the wrist from the trajectory (wrist "locking"), a multiplier of one representing
+typical use, and a minimum multiplier close to zero resulting in amplified wrist use relative
+to other joints in the arm.
+<br>
+<br>
+For the sake of brevity I will not include the optimization formulations or resulting plots here, though they can be
+found in Chapter 4 of my thesis. However, all sweeps revealed notable results
+regarding the energy expenditure of the arm throughout the trajectories, and the passivity
+sweep showed a clear trend of increasing wrist activity accelerating the rate of error reduction
+relative to the target state during trajectories.
+        </p>
+        </div>
+          <div class="project-image">
+            <img src="images/traj_opt_flowchart.png" alt="Trajectory optimization flowchart">
+            <figcaption style="text-align: center;">
+              Fig. 9: Flowchart of trajectory optimization workflow for both simulation and hardware experiments.
+            </figcaption>
+            <img src="images/mj_swing.png" alt="Trajectory visualization">
+            <figcaption style="text-align: center;">
+              Fig. 10: Overview of the arm model as rendered in MuJoCo. Shown as a small teal sphere
+in the upper left of the figure is the target position, with the line segment representing the
+direction of the target paddle normal vector (governing the paddle orientation during a strike).
+            </figcaption>
+          </div>
+      </div>
+    </div>
+
+    <div class="project-section">
+      <h2>Hardware Results</h2>
+          <div>
+          <p>
+            Full videos and details of the wrist's performance in the lab's
+            robotic table tennis system will be displayed after official publication of the project. Please feel free to reach out with questions in the meantime.
+          </p>
+          </div>
+    </div>
+
+    <div class="project-section">
+      <h2>Acknowledgements</h2>
+          <div>
+          <p>
+            A special thanks to Professor Sangbae Kim for supervising this thesis, and to David Nguyen
+            for his mentorship throughout the project! Thank you as well to Professor Rohan Abeyaratne for
+            providing valuable reviews of some of the mechanical calculations pursued in this thesis, as well as to
+            Dr. Nicholas Ignacio for his experimental advising and support.
+          </p>
+          </div>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <p class="dev-note">
+    Designed &amp; coded in HTML/CSS/JS by Annika Marschner
+    <img class="dev-note-icon" src="images/computer_icon.png" alt="">
+  </p>
+    <a href="#top" class="back-to-top">↑ Back to top</a>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Annika Marschner</title>
+  <meta name="description" content="Incubator project overview page.">
+  <link rel="icon" type="image/png" href="images/tools_icon.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <header class="nav">
+    <div class="container">
+      <div class="nav-menus">
+        <a href="index.html" class="nav-name">Annika Marschner</a>
+        <ul class="nav-links">
+          <li><a href="index.html" aria-current="page">Projects</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="project-header">
+      <div class="project-header-row">
+        <div class="project-icon">
+          <img src="images/incubator_icon.png" alt="Incubator Icon">
+        </div>
+        <div class="project-header-content">
+          <h1>Custom Incubator for Imaging</h1>
+          <p class="subtitle">Undergraduate research project in the Raman Lab,
+                              co-advised by Prof. Martin Culpepper and Prof. Ritu Raman.</p>
+          </div>
+        </div>
+    </section>
+
+    <!-- Note to grab thumbnail frame with format like ffmpeg -ss 00:00:10 -i gantry_rally.mp4 -vframes 1 thumbnail.jpg -->
+
+     <div class="split-row">
+            <div class="project-image" style ="--split: .9;">
+            <img src="images/incubator_main.png" alt="Incubator overview photo">
+            </div>
+          <div class="project-section">
+              <h2>Background</h2>
+              <p>
+                Removing thermally sensitive samples from their ideal temperature conditions in traditional
+                incubators for extended periods is often necessary for in-depth imaging, but can adversely
+                affect the health and viability of the samples.
+                <br>
+                <br>
+                I designed and built this mini incubator to protect sensitive samples during
+                long experiments that require continuous imaging on a microscope. By maintaining a stable 37°C
+                environment around a 100mm petri dish, this incubator enables both long periods of imaging and
+                easy user interaction with samples. A multi-layer PID control system takes multiple sensor inputs into
+                account for precise temperature control, while a small footprint allows for frequent relocation
+                and storage in a lab where bench space is limited.
+                You can read about some of the experiments enabled by this incubator in
+                <a href="https://advanced.onlinelibrary.wiley.com/doi/10.1002/advs.202512680" class="text-link3"
+                target="_blank">this publication</a>.
+              </p>
+          </div>
+     </div>
+
+    <div class="project-section">
+        <div class = "split-row">
+            <div style ="--split: 1.0;">
+              <h2>Design Overview &amp; Fabrication</h2>
+              <p>
+                A selection of revisions in the design evolution of this incubator can be seen to the right. Early
+                designs in CAD were revised based on feedback about the incubator's usability and ease
+                of fabrication, while fabricated prototypes were revised largely based on practical performance
+                shortcomings (for example, initially oversimplified power calculations didn't sufficiently account
+                for convective heat loss through an imperfect seal between the first prototype of the incubator
+                and the microscope).
+                <br>
+                <br>
+                The fabrication process of the final prototype of this incubator is quite accessible, requiring a
+                limited selection of easily operated machines and low cost materials (&lt;$150 total).
+                Top window panels were laser cut from acrylic, while the main walls, hinges, and electronics housing were
+                3D printed on a Stratasys J35 printer. Thin copper heat distribution linings for the walls were cut on a metal shear.
+                <br>
+                <br>
+                Please feel free to contact me if you'd like to build one of these incubators
+                for your own use&mdash;I'm happy to provide relevant files and further fabrication instructions over email.
+              </p>
+          </div>
+          <div>
+            <div class="project-image">
+              <img src="images/incubator_designs.png" alt="Incubator design evolution chart">
+              <!-- <figcaption style="text-align: center;">
+              </figcaption> -->
+            </div>
+          </div>
+        </div>
+
+      <div class = "split-row">
+        <div style ="margin: 0;">
+          <div class="project-image">
+            <img src="images/incubator_circuit.png" alt="Incubator circuit diagram">
+            <figcaption style="text-align: center;">
+              Here, H1 and H2 are the Thorlabs resistive heaters, ET is the environmental sensing thermistor,
+              and H1T & H2T are the built-in thermistors for heaters 1 & 2 respectively. V<sub>in</sub> refers to voltage inputs
+              to the Arduino, while V<sub>out</sub> refers to voltage outputs from the Arduino.
+            </figcaption>
+          </div>
+          </div>
+
+          <div style ="--split: 1.1;">
+          <p>
+            The electrical system of this incubator can be thought of in two sections: a higher power
+            heating circuit, and a lower power sensing circuit. The heating circuit controls power from a
+            24V DC power supply to the heaters via an n-channel MOSFET, which is driven by a PWM voltage at
+            the gate (a digital output from an Arduino Nano).
+            <br>
+            <br>
+            The PWM duty cycle to the heaters is determined
+            by a PID control system (implemented in C++) that takes inputs from the sensing circuit: a set of
+            NTC thermistors monitoring both the heater temperatures and the temperature of the internal
+            environment of the incubator (see the following section for further details on the control system).
+            <br>
+            <br>
+            The resistance of these thermistors is deduced using analog voltage inputs to the Arduino Nano, and
+            can subsequently be used to determine the temperature of the heaters and environment.
+          </p>
+          </div>
+      </div>
+    </div>
+
+    <div class="project-section">
+      <h2> Control System Design</h2>
+      <p>
+        To control the temperature response of this incubator, two PID controllers run simultaneously,
+        the first one controlling an <b>upper-limit</b> on the maximum PWM duty-cycle from the Arduino to the MOSFET
+        (that is, the maximum power to the heaters), and the second one controlling a <b>requested</b> duty-cycle.
+
+        The first controller (I will call this the <b>limiting controller</b>) takes the temperature data of the
+        heaters themselves as an input, while the second controller (I will call this the <b>requesting controller</b>)
+        takes the temperature data of the internal environment of the incubator.
+        <br>
+        <br>
+        Due to the high initial error between
+        the desired temperature (37°C) and actual temperature (~20°C) of the internal environment when the incubator is
+        first powered on, the requesting controller will ask for an outrageously high power to be supplied to the heaters.
+        However, this value is "blocked" by the limiting controller, which lowers the maximum allowable power
+        request as the heaters approach their maximum recommended operating temperature (around 100°C).
+      </p>
+  <div class = "split-row">
+        <div>
+        <p>
+As the internal environmental temperature in the incubator approaches its desired value,
+the requested power from the requesting controller decreases to a more reasonable value,
+and is no longer high enough to cause the heaters to exceed their maximum temperature.
+As this transition takes place, we see the limiting controller become obsolete as it no longer
+needs to limit a large power request.
+<br>
+<br>
+
+These two phases&mdash;the limiting controller initially dominating the response of the system,
+while the requesting controller later dominates the response&mdash;can be seen in the
+step response of the incubator. By running both controllers simultaneously, we have a safety
+net against overheating, and we can achieve both a fast rise time and long-term precision.
+        </p>
+      </div>
+          <div class="project-image" style ="--split: 0.8;">
+            <img src="images/incubator_step.png" alt="Incubator step response plot">
+          </div>
+    </div>
+    </div>
+
+    <div class="project-section">
+      <h2>Acknowledgements</h2>
+          <div>
+          <p>
+            Thank you to Prof. Ritu Raman and Prof. Martin Culpepper for providing continual advising and
+            support over the course of this project, and to Nicolas Castro for providing indispensable user feedback!
+            A special thank you as well to Dr. Harrison Chin and Steve Banzaert for data streaming and electrical system guidance, respectively.
+          </p>
+          </div>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <p class="dev-note">
+    Designed &amp; coded in HTML/CSS/JS by Annika Marschner
+    <img class="dev-note-icon" src="images/computer_icon.png" alt="">
+  </p>
+    <a href="#top" class="back-to-top">↑ Back to top</a>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

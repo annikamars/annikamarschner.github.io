@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Annika Marschner</title>
+  <meta name="description" content="F-Light bioprinting project overview page.">
+  <link rel="icon" type="image/png" href="images/tools_icon.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <header class="nav">
+    <div class="container">
+      <div class="nav-menus">
+        <a href="index.html" class="nav-name">Annika Marschner</a>
+        <ul class="nav-links">
+          <li><a href="index.html" aria-current="page">Projects</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="project-header">
+      <div class="project-header-row">
+        <div class="project-icon">
+          <img src="images/flight_icon.png" alt="FLight icon">
+        </div>
+        <div class="project-header-content">
+          <h1>Piezoelectric Filamented Light 3D Bioprinter</h1>
+          <p class="subtitle"> Summer research project at ETH Zürich, advised by Dr. Parth Chansoria and Prof. Marcy Zenobi-Wong.</p>
+          </div>
+        </div>
+    </section>
+
+    <!-- Note to grab thumbnail frame with format like ffmpeg -ss 00:00:10 -i gantry_rally.mp4 -vframes 1 thumbnail.jpg -->
+
+     <div class="split-row">
+            <div class="project-image" style ="--split: 1;">
+            <img src="images/flight_overview.png" alt="FLight overview photo">
+            </div>
+          <div class="project-section">
+              <h2>Background</h2>
+              <p>
+                Filamented Light (FLight) 3D bioprinting is a technique developed by ETH Zürich's Tissue
+                Engineering and Biofabrication Group to fabricate tissue constructs with highly aligned
+                microfilaments. These microfilaments are caused by a "speckle" pattern of local maxima in the
+                light source, and are a desirable characteristic for anisotropic tissues like muscle and tendon.
+                While the traditional FLight printing is limited to relatively short, constant cross-section constructs
+                due to a lack of translating elements, the adoption of a DLP-style printing setup with a vertical translation
+                stage makes it possible to fabricate much larger constructs with increased geometric complexity.
+                <br>
+                <br>
+                Over the summer of 2024, I adapted FLight biofabrication for DLP-style bioprinting. This new
+                printer (overviewed to the left) can fabricate constructs over 40mm
+                in length (approximately 10x longer than traditional FLight constructs).
+              </p>
+          </div>
+     </div>
+
+    <div class="project-section">
+        <div class = "split-row">
+            <div style ="--split: .75;">
+                      <h2>System Overview</h2>
+              <p>
+                Behind the scenes, this printer relies on custom software to communicate user
+                commands on two fronts simultaneously&mdash;the software transmits motion-related commands to the vertical translation stage,
+                while maintaining communication with the laser controller via a set of Arduinos.
+                Thus, while the translation stage continuously draws the printed construct up out of
+                the resin bath, the laser can crosslink (chemically knit into a stiffer structure)
+                the new resin that flows into place under the construct, allowing it to grow at the
+                rate of stage translation.
+
+              </p>
+          </div>
+          <div>
+            <div class="project-image">
+              <img src="images/flight_system_diagram.png" alt="FLight system overview diagram">
+            </div>
+          </div>
+        </div>
+
+      <p>
+                The bulk of the software for this printer is written in C#, and carrying out a few tasks at once:
+                (1) Using Thorlabs' motion control libraries to send position/velocity commands to the piezoelectric
+                translation stage, (2) continuously streaming serial data to an Arduino to control the voltage to the
+                laser controller, and (3) wrapping up all these functions (for printing, homing, parameter control, etc.)
+                into a WPF user interface.
+      </p>
+      <p>
+        There were some small, simple hardware components to develop for this project: a substrate for the printed construct to adhere to, a substrate mount to attach this substrate to the stage, and a mount for the stage itself.
+        While the stage mount design is trivial, the substrate &amp; its mount have more interesting designs, shown below,
+        in order to be (1) easy to interact with and (2) well-suited for their load conditions.
+      </p>
+         <div class="project-image">
+            <img src="images/flight_hardware.png" alt="FLight mount designs">
+        </div>
+      </div>
+
+    <div class="project-section">
+      <h2> Process &amp; Material Optimization</h2>
+
+      <div>
+        <p>
+          Following initial hardware and software development for the printer, I began a series of test prints.
+          See below a summary of significant revisions to the printing process and materials used, which ultimately
+          enabled us to reliably print high-detail constructs with a variety of materials, including cell-seeded materials.
+        </p>
+      </div>
+
+<div class="project-image">
+            <img src="images/flight_process.png" alt="FLight process optimization">
+</div>
+    </div>
+    <div class="project-section">
+      <h2>Acknowledgements</h2>
+          <div>
+          <p>
+            Thank you so much to Professor Marcy Zenobi-Wong for having me as a guest in the lab to work on this printer, and to Dr. Parth Chansoria for being my direct advisor!
+            A big thank you as well to the <a href="https://swissnex.org/services/academia/thinkswiss-research-scholarships-north-america/" class="text-link3" target="_blank">ThinkSwiss Research Scholarship</a> for funding my work on this project.
+          </p>
+          </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p class="dev-note">
+    Designed &amp; coded in HTML/CSS/JS by Annika Marschner
+    <img class="dev-note-icon" src="images/computer_icon.png" alt="">
+  </p>
+    <a href="#top" class="back-to-top">↑ Back to top</a>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

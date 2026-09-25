@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Annika Marschner</title>
+  <meta name="description" content="Gantry project overview page.">
+  <link rel="icon" type="image/png" href="images/tools_icon.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <header class="nav">
+    <div class="container">
+      <div class="nav-menus">
+        <a href="index.html" class="nav-name">Annika Marschner</a>
+        <ul class="nav-links">
+          <li><a href="index.html" aria-current="page">Projects</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="project-header">
+      <div class="project-header-row">
+        <div class="project-icon">
+          <img src="images/gantry_icon.png" alt="Gantry Icon">
+        </div>
+        <div class="project-header-content">
+          <h1>High-Speed Robotic Gantry</h1>
+          <p class="subtitle">Undergraduate research in the MIT Biomimetic Robotics Lab, advised by Prof. Sangbae Kim.</p>
+          </div>
+      </div>
+    </section>
+
+    <!-- Note to grab thumbnail frame with format like ffmpeg -ss 00:00:10 -i gantry_rally.mp4 -vframes 1 thumbnail.jpg -->
+
+     <div class="split-row">
+        <div class="project-video">
+          <video controls poster="videos/gantry_thumbnail.jpg">
+            <source src="videos/gantry_rally.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="project-section">
+            <h2>Background</h2>
+            <p>
+              It is an ongoing goal in the robotics community
+              to achieve high level robotic performance in table tennis,
+              an engaging and dynamically complex activity. In the
+              Biomimetic Robotics Lab, I worked with graduate students <a href="https://www.linkedin.com/in/davidhnguyen13/"
+              class="text-link3" target="_blank">David Nguyen</a> and <a href="https://www.linkedin.com/in/kendrick-cancio/"
+              class="text-link3" target="_blank">Kendrick Cancio</a> to approach this challenge.
+              My initial work on this project covered the design, fabrication, and integration of a high-speed
+              gantry to increase the workspace of a previously statically mounted
+              robotic arm. See also <a href="wrist.html" class="text-link3" target="_blank"> Modular Torque-Dense Wrist Assembly</a>
+              for my subsequent work on designing an upgraded 3-DOF wrist for this same system.
+            </p>
+        </div>
+     </div>
+
+    <div class="project-section">
+      <div>
+        <h2>Hardware Design</h2>
+        </div>
+      <div class = "split-row">
+        <div>
+          <p>
+            Preliminary performance simulations in Python (assuming constant 60% motor efficiency, no frictional losses, etc.)
+            showed that with just one of our lab's U12 motors and a large pulley radius (0.09m), a belt driven
+            system could fulfill our primary functional requirement: to traverse half the width of the table (0.77m) in under
+            500 ms. Having validated this general approach, I moved on to more detailed hardware design with an emphasis on modularity,
+            lightweighting, and a compact overall footprint.
+            <br>
+            <br>
+            On a high level, the system can be reduced to a series of subassemblies contained in a simple aluminum extrusion base frame, with linear guides mounted
+            directly into these extrusions. The entire belt drive (including a belt tensioning system, the motor, and two large pulleys) lies
+            within the footprint of this base frame, while the arm frame subassembly clamps directly to the drive belt.
+          </p>
+        </div>
+          <div class="project-image">
+            <img src="images/gantry_hardware_overview.png" alt="Gantry Hardware Overview">
+          </div>
+      </div>
+      <div class="project-image">
+            <img src="images/gantry_mot_mod.png" alt="Gantry Motor Module Overview">
+      </div>
+      <div class="project-image">
+            <img src="images/gantry_pulley_fea.png" alt="Gantry Pulley FEA">
+      </div>
+
+
+      <div class = "split-row">
+          <div style ="--split: 1.25;">
+          <p>
+            FEA on the pulley under maximum motor torque output showed microscale deformation and a safety factor (to yield) over 10x—something I intentionally
+            didn't carve down further to allow for the incorporation of this pulley into future systems in the lab with unknown torque requirements.
+            <br>
+            <br>
+            Beyond the motor mount subassembly, a mobile arm frame subassembly interfaces with the arm itself. A tube-based
+            pyramidal design provides high stiffness under the extreme dynamic loads possible during operation,
+            while minimizing mobile mass to allow for faster linear acceleration along the gantry. Carbon fiber enforced nylon 3D prints
+            serve as adapters in this structure, fixed to the tubes with toughened epoxy.
+          </p>
+          </div>
+        <div class="project-image" style="--split: 1;">
+            <img src="images/gantry_tension.png" alt="Gantry tensioning mechanism">
+          </div>
+      </div>
+
+       <div>
+          <p>
+            Note that 4-way rotational symmetry of the mounting elements in the base plate and these adapters allows the arm to be mounted with its shoulder
+            plane either parallel or perpendicular to the edge of the table, allowing for experimentation with different swing types.
+          </p>
+        </div>
+      <div class = "split-row">
+          <div class="project-image" style ="--split: 1.25;">
+            <img src="images/gantry_arm_frame.png" alt="Gantry arm frame overview">
+          </div>
+          <div class="project-image">
+            <img src="images/gantry_plate_fea.png" alt="Gantry arm frame overview">
+          </div>
+      </div>
+
+      <div class="project-image">
+            <img src="images/gantry_mass_min.png" alt="Gantry Lightweighting Overview">
+      </div>
+    </div>
+
+    <div class="project-section">
+      <h2> Control &amp; Integration</h2>
+          <div>
+          <p>
+            Following the design and assembly of the necessary hardware components for this gantry,
+            I moved on to some work on control and integration with the existing arm platform
+            (formerly statically mounted to a table at its shoulder). A critical feature was a robust
+            homing protocol to orient the system in space. I used a sensorless homing approach in which
+            a spike in the motor's current draw is used as a cue for collision with the system's hard stops.
+            Written in C++, this low-level homing program smooths current measurements to prevent false positive
+            triggers. A 2-pass contact at each hard stop with variable speed of approach
+            helps balance speed and precision, and soft stops for the gantry are set at the conclusion of
+            homing.
+          </p>
+          </div>
+
+      <div class = "split-row">
+        <div class="project-image" style="--split: 1;">
+            <img src="images/gantry_virtual_wall.png" alt="Gantry virtual wall controller">
+        </div>
+        <div style ="--split: 1.25;">
+          <p>
+            Due to the high operating speeds of this system, it's also critical to have a level of control preventing collisions
+            of the system both with itself and its environment. I wrote a virtual wall based controller with CasADi (in this case,
+            used exclusively for its algorithmic differentiation capabilities), which allows it to be exported and
+            utilized at a low level in the hardware controller.
+            <br>
+            <br>
+            This controller applies a virtual repulsive force collinear to the line segment representing the shortest distance between
+            any two collision geometries that have violated a certain buffer
+            distance. Visualization of the impact of the virtual wall is shown to the left. Note that the small yellow ball visible outside
+            the sphere enclosing the paddle in the right column of images represents the commanded position of the paddle center in
+            the absence of the virtual wall torque. In the left column of images, this commanded position simply aligns with the center
+            of the paddle throughout the trajectory.
+          </p>
+          </div>
+    </div>
+    </div>
+
+    <div class="project-section">
+      <h2>Acknowledgements</h2>
+          <div>
+          <p>
+            An enormous thank you to David Nguyen for providing incredible mentorship and support on this project.
+            Thank you as well to Prof. Sangbae Kim
+            for sharing valuable insights on system-level design, and to Se Hwan Jeon,
+            Andrew SaLoutos, and David Kim for being so generous with their time and knowledge!
+          </p>
+          </div>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <p class="dev-note">
+    Designed &amp; coded in HTML/CSS/JS by Annika Marschner
+    <img class="dev-note-icon" src="images/computer_icon.png" alt="">
+  </p>
+    <a href="#top" class="back-to-top">↑ Back to top</a>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
